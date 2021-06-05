@@ -12,6 +12,8 @@
     <style>
         body {
             margin-top: 70px;
+            background: #333;
+            color: #fff;
         }
     </style>
 </head>
@@ -19,24 +21,54 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <h1 class="display-4 text-center">
+            <div class="col-md-6 offset-md-3">
+                <h1 class="display-4 text-center mb3">
                     Weight Converter
                 </h1>
 
 
                 <form>
                     <div class="form-group">
-                        <input type="number" class="form-control form-control-lg" placeholder="Enter Pound...">
+                        <input type="number" id="lbsInput" class="form-control form-control-lg" placeholder="Enter Pound...">
                     </div>
                 </form>
 
-                <div class="output">
-                    .
+                <div id="output">
+                    <div class="card bg-primary p-2 mb-2">
+                        <div class="card-block">
+                            <h4>Grams:</h4>
+                            <div id="gramsOutput"></div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-success p-2 mb-2">
+                        <div class="card-block">
+                            <h4>Kilogram:</h4>
+                            <div id="kgOutput"></div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-danger p-2 mb-2">
+                        <div class="card-block">
+                            <h4>Ounces:</h4>
+                            <div id="ozOutput"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('output').style.visibility = 'hidden';
+
+        document.querySelector("#lbsInput").addEventListener('input', (e) => {
+            document.getElementById('output').style.visibility = 'visible';
+            let lbs = e.target.value;
+            document.querySelector("#gramsOutput").innerHTML = lbs/0.0022046;
+            document.querySelector("#kgOutput").innerHTML = lbs/2.2046;
+            document.querySelector("#ozOutput").innerHTML = lbs * 16;
+        });
+    </script>
 </body>
 
 </html>
