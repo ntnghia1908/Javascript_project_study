@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>4K Television Rating</title>
+
+    <style>
+        .stars-outer {
+            position: relative;
+            display: inline-block;
+        }
+
+        .stars-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+
+        .stars-outer::before {
+            font-family: "Font Awesome 5 Pro";
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-weight: 900;
+            color: #ccc;
+        }
+
+        .stars-inner::before {
+            font-family: "Font Awesome 5 Pro";
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-weight: 900;
+            color: #f8ce0b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-group">
+            <select id="product-select" class="form-control custom-select mt-5">
+                <option value="0" disabled selected>Select Product</option>
+                <option value="sony">Sony 4K TV</option>
+                <option value="samsung">Samsung 4K TV</option>
+                <option value="vizio">Visiz 4K TV</option>
+                <option value="panasonic">Panasonic 4K TV</option>
+                <option value="phillips">Phillips 4k TV</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="number" id="rating-control" class="form-control" step="0.1" max="5" disabled
+                placeholder="Rating from 1-5">
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>4K Televison</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="sony">
+                    <td>Sony 4K TV</td>
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+                <tr class="samsung">
+                    <td>Samsung 4K TV</td>
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+                <tr class="vizio">
+                    <td>Vizio 4K TV</td>
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+                <tr class="panasonic">
+                    <td>Panasonic 4K TV</td>
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+                <tr class="phillips">
+                    <td>Phillips 4K TV</td>
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<script>
+    // initial Rating
+    const ratings = {
+        sony: 4.4,
+        samsung: 3.2,
+        vizio: 2.1,
+        panasonic: 3.7,
+        phillips: 2.9
+    }
+
+
+    // total Rating
+    const totalRating = 5;
+
+    document.addEventListener('DOMContentLoaded', getRating);
+
+    // Form elements
+    const productSelect = document.getElementById('product-select');
+    const ratingControl = document.getElementById('rating-control');
+
+    // Initial product
+    let product;
+
+    // Product select change
+    productSelect.addEventListener('change', (e) => {
+        product = e.target.value;
+        // Enable rating control
+        ratingControl.disabled = false;
+        ratingControl.value = ratings[product]
+    })
+
+    // Rating control change
+    ratingControl.addEventListener('blur', (e) => {
+        let rating = e.target.value;
+
+        if (rating > 5) {
+            const div = document.createElement('div');
+            div.className = 'alert alert-danger';
+            div.appendChild(document.createTextNode("Please enter 1-5"));
+
+            const container = document.querySelector('.container');
+            container.insertBefore(div, ratingControl.parentNode);
+            return;
+        }
+
+        ratings[product] = rating;
+        getRating()
+    })
+
+
+    function getRating() {
+        for (let rating in ratings) {
+            // Get percentage
+            const startPercentage = (ratings[rating] / totalRating) * 100
+
+            // Round to nearest 10
+            const startPercentageRounded = `${Math.round(startPercentage / 10) * 10}%`
+
+            // Set width for Star-inner
+            document.querySelector(`.${rating} .stars-inner`).style.width = startPercentageRounded;
+
+            // Add number rating
+            document.querySelector(`.${rating} .number-rating`).innerHTML = ratings[rating];
+        }
+    }
+
+</script>
+
+</html>
